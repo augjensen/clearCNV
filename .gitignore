@@ -1,0 +1,22 @@
+# Data files
+data/
+data_download/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Results
+results/
+
+# Gemini chat history files
+gemini_chat_history/
+
+# The project plan
+Project_plan_masked_autoencoder.md
