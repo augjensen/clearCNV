@@ -1,13 +1,10 @@
 # Data files
 data/
-data_download/
+datasets/
 
 # Python cache
 __pycache__/
 *.pyc
-
-# Virtual environment
-venv/
 
 # Jupyter notebook checkpoints
 .ipynb_checkpoints/
@@ -20,3 +17,26 @@ gemini_chat_history/
 
 # The project plan
 Project_plan_masked_autoencoder.md
+
+# Notes
+notes/
+
+# ---- Pybiomart cache ----
+*.sqlite
+*.db
+*.log
+*.tmp
+
+# ---- Virtual environments ----
+.venv/
+venv/
+env/
+
+# ---- Jupyter notebooks checkpoints ----
+.ipynb_checkpoints/
+
+# ---- OS / IDE stuff ----
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc

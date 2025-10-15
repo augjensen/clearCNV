@@ -33,11 +33,9 @@ This project aims to improve Copy Number Variation (CNV) inference from spatial 
     cd <repository-name>
     ```
 
-2.  **Create a virtual environment and install dependencies:**
+2.  **Install dependencies:**
 
     ```bash
-    python -m venv venv
-    source venv/bin/activate
     pip install -r requirements.txt
     ```
 
@@ -77,3 +75,6 @@ To save your Gemini chat history for documentation purposes, follow these steps:
     ```bash
     cp /root/.gemini/tmp/*/checkpoint-01_startup.json ./gemini_chat_history/
     ```
+
+    cp ./gemini_chat_history/checkpoint-01_startup.json /root/.gemini/tmp/*/ 
+    
