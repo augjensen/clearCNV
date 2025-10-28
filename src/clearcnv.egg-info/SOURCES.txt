@@ -1,0 +1,13 @@
+README.md
+setup.py
+src/clearcnv/__init__.py
+src/clearcnv/data.py
+src/clearcnv/evaluate.py
+src/clearcnv/loss.py
+src/clearcnv/model.py
+src/clearcnv/train.py
+src/clearcnv/utils.py
+src/clearcnv.egg-info/PKG-INFO
+src/clearcnv.egg-info/SOURCES.txt
+src/clearcnv.egg-info/dependency_links.txt
+src/clearcnv.egg-info/top_level.txt

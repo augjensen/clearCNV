@@ -1,6 +1,7 @@
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 class MaskedAutoencoder(nn.Module):
     """
@@ -37,11 +38,17 @@ class MaskedAutoencoder(nn.Module):
             decoder_layers.append(nn.Linear(input_dim, dim))
             decoder_layers.append(nn.ReLU())
             input_dim = dim
-        decoder_layers.append(nn.Linear(input_dim, n_genes))
-        self.decoder_mlp = nn.Sequential(*decoder_layers)
-        
+        self.decoder = nn.Sequential(*decoder_layers)
+
+        # Output layer for mu, theta and pi
+        self.decoder_mu = nn.Linear(input_dim, n_genes)
+        self.decoder_theta = nn.Linear(input_dim, n_genes)
+        self.decoder_pi = nn.Linear(input_dim, n_genes)
+
         # 1D Convolutional layer for genomic adjacency
-        self.conv1d = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=conv_kernel_size, padding=conv_kernel_size//2)
+        self.conv1d_mu = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=conv_kernel_size, padding=conv_kernel_size//2)
+        self.conv1d_theta = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=conv_kernel_size, padding=conv_kernel_size//2)
+        self.conv1d_pi = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=conv_kernel_size, padding=conv_kernel_size//2)
 
 
     def forward(self, x, mask_rate=0.15):
@@ -53,7 +60,10 @@ class MaskedAutoencoder(nn.Module):
             mask_rate (float): The rate of masking.
 
         Returns:
-            torch.Tensor: The reconstructed tensor of shape (batch_size, n_genes).
+            tuple: A tuple containing:
+                - mu (torch.Tensor): The mean of the negative binomial distribution.
+                - theta (torch.Tensor): The dispersion of the negative binomial distribution.
+                - pi (torch.Tensor): The zero-inflation logits.
             torch.Tensor: The mask tensor of shape (batch_size, n_genes).
         """
         # Create a mask
@@ -65,12 +75,22 @@ class MaskedAutoencoder(nn.Module):
         encoded = self.encoder(masked_x)
         
         # Decode
-        decoded_mlp = self.decoder_mlp(encoded)
+        decoded_hidden = self.decoder(encoded)
+        mu = torch.exp(self.decoder_mu(decoded_hidden))
+        theta = F.softplus(self.decoder_theta(decoded_hidden))
+        pi = self.decoder_pi(decoded_hidden)
 
         # Apply 1D convolution
-        # The input to Conv1d should be (batch_size, in_channels, sequence_length)
-        decoded_mlp_reshaped = decoded_mlp.unsqueeze(1)
-        decoded_conv = self.conv1d(decoded_mlp_reshaped)
-        decoded = decoded_conv.squeeze(1)
+        mu_reshaped = mu.unsqueeze(1)
+        mu_conv = self.conv1d_mu(mu_reshaped)
+        mu = mu_conv.squeeze(1)
 
-        return decoded, mask
+        theta_reshaped = theta.unsqueeze(1)
+        theta_conv = self.conv1d_theta(theta_reshaped)
+        theta = theta_conv.squeeze(1)
+
+        pi_reshaped = pi.unsqueeze(1)
+        pi_conv = self.conv1d_pi(pi_reshaped)
+        pi = pi_conv.squeeze(1)
+
+        return (mu, theta, pi), mask

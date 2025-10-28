@@ -73,8 +73,7 @@ To save your Gemini chat history for documentation purposes, follow these steps:
     
     For example, if you named your chat "01_startup", you would run:
     ```bash
-    cp /root/.gemini/tmp/*/checkpoint-01_startup.json ./gemini_chat_history/
+    cp /root/.gemini/tmp/*/checkpoint-04_model_improvement.json ./gemini_chat_history/
     ```
 
-    cp ./gemini_chat_history/checkpoint-01_startup.json /root/.gemini/tmp/*/ 
     

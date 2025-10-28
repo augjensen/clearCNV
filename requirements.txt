@@ -3,3 +3,7 @@ numpy
 anndata
 scanpy
 infercnvpy
+scipy
+spatialdata
+geopandas
+scikit-learn
