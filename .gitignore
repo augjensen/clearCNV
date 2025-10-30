@@ -13,7 +13,7 @@ __pycache__/
 results/
 
 # Gemini chat history files
-gemini_chat_history/
+# gemini_chat_history/
 
 # The project plan
 Project_plan_masked_autoencoder.md
