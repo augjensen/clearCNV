@@ -1,0 +1,9 @@
+{
+   "mcpServers": {
+      "sc-mcp": {
+         "type": "stdio",
+         "command": "/usr/local/bin/python",
+         "args": ["clearCNV/sc_mcp_server.py"]
+      }
+   }
+}

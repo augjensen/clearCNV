@@ -7,3 +7,5 @@ scipy
 spatialdata
 geopandas
 scikit-learn
+spatialdata_io
+squidpy
